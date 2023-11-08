@@ -23,8 +23,10 @@ const images = [
 ];
 
 const items = document.querySelector(".items")
+const thumbs = document.querySelector(".thumbs")
 
 let imgString = ""
+let thumbString = ""
 
 for (let i = 0; i < images.length; i++) {
     const imageObj = images[i];
@@ -35,32 +37,63 @@ for (let i = 0; i < images.length; i++) {
         <p>${imageObj.text}</p>
     </div>
     `
+    thumbString += `
+    <div class="thumb">
+    <img src="/${imageObj.image}" alt="">
+    </div>
+    `
 }
 
 items.innerHTML += imgString
+thumbs.innerHTML = thumbString
 
 const nextBtn = document.querySelector(".next")
 const prevBtn = document.querySelector(".prev")
 const imgArray = document.querySelectorAll(".item")
+const thumbArray = document.querySelectorAll(".thumb")
+
 let currIndex = 0;
 imgArray[currIndex].classList.add("active")
+thumbArray[currIndex].classList.add("active")
+
+let interval = setInterval(nextImage, 3000)
 
 nextBtn.addEventListener("click", function() {
+    clearInterval(interval)
+    nextImage()
+    interval = setInterval(nextImage, 3000)
+})
+
+prevBtn.addEventListener("click", function() {
+    clearInterval(interval)
+    prevImage()
+    interval = setInterval(nextImage, 3000) 
+})
+
+
+
+
+//******************** FUNZIONI ***********************
+function nextImage() {
     imgArray[currIndex].classList.remove("active")
+    thumbArray[currIndex].classList.remove("active")
     if (currIndex < imgArray.length - 1) {
         currIndex++
     } else {
         currIndex = 0
     }
     imgArray[currIndex].classList.add("active")
-})
+    thumbArray[currIndex].classList.add("active")
+}
 
-prevBtn.addEventListener("click", function() {
+function prevImage() {
     imgArray[currIndex].classList.remove("active")
+    thumbArray[currIndex].classList.remove("active")
     if (currIndex > 0) {
         currIndex--
     } else {
         currIndex = imgArray.length - 1
     }
     imgArray[currIndex].classList.add("active")
-})
+    thumbArray[currIndex].classList.add("active")
+}
